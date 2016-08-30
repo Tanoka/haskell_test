@@ -1,0 +1,126 @@
+Purely functional
+
+Listas (lists). Estructura de datos homogénea. [1,2,4] ; "hello" == ['h','e','l','l','o'] ; [[],[],[]]
+Lista intesional (list comprehension). [ x | x <- [50..100], x `mod` 7 == 3]
+Tupla (Tuples). Las tuplas pueden contener una combinación de valores de distintos tipos. ('a', 4)
+[ (a,b) | a <- [1..5], b <-['a'..'c']] [(1,'a'), (1,'b'), (2,'a'), (2,'b') .... ]
+
+Haskell tiene un sistema de tipos estático (Statically typed) (static type system). Se conoce el tipo de cada expresión en tiempo de compilación
+Todo en Haskell tiene un tipo
+Haskell posee inferencia de tipos (Type inference). Si escribimos un número, no tenemos que especificar que eso es un número.
+
+Los tipos explícitos siempre se escriben con su primera letra en mayúsculas. 
+Char, Bool, Int, Integer, Float, Double. [Char] -lista de tipo Char-, (Bool, Char) -Tupla de tipos Bool y char-
+
+Toda expresión tiene tipo.
+Toda función tiene tipo, que se puede declarar explicitamente. 
+addThree :: Int -> Int -> Int -> Int
+
+Variables de tipo (Type variables). [a] -> a No comienzan con una mayúscula, Esto significa que a puede ser cualquier tipo. Las funciones que tienen variables de tipos son llamadas funciones polimórficas ( polymorphic functions)
+ghci> :t fst
+fst :: (a, b) -> a
+
+Clases de tipos (Typeclasses).
+Las clases de tipos son una especie de interfaz que define algún tipo de comportamiento. Si un tipo es miembro de una clase de tipos, significa que ese tipo soporta e implementa el comportamiento que define la clase de tipos
+
+Declaración de tipo de la función ==
+ghci> :t (==)
+(==) :: (Eq a) => a -> a -> Bool
+Cualquier cosa antes del símbolo => es una restricción de clase (class constraint)
+Podemos leer la declaración de tipo anterior como: la función de igualdad toma dos parámetros que son del mismo tipo y devuelve un Bool. El tipo de estos dos parámetros debe ser miembro de la clase Eq (esto es la restricción de clase). 
+ 
+Clases de tipos básicas: Eq, Ord, Show, Read, Enum, Bounded, Num, Integral, Floating  
+Tipos de la clase Ord: Ordering, que puede tener tres valores distintos: GT, EQ y LT
+Tipos de la clase Enum: (), Bool, Char, Ordering, Int, Integer, Float y Double.
+Tipos de la clase Num: Int, Integer, Float, Double
+
+La función (*) toma dos parametros de tipo Num y retorna un resultado del mismo tipo que los parámetros.
+ghci> :t (*)
+(*) :: (Num a) => a -> a -> a
+
+Para unirse a Num, un tipo debe ser amigo de Show y Eq.
+
+Anotaciones de tipo explícitas (type annotations) 
+ghci> read "5" :: Int
+5
+ghci> read "5" :: Float
+5.0
+
+Ajuste de patrones (pattern matching) Un ajuste de patrones consiste en una especificación de pautas que deben ser seguidas por los datos, los cuales pueden ser deconstruidos permitiéndonos acceder a sus componentes.
+
+El patrón x:xs es muy utilizado, especialmente con las funciones recursivas. Los patrones que contengan un : solo aceptarán listas con algún elemento.
+length' :: (Num b) => [a] -> b
+length' [] = 0
+length' (_:xs) = 1 + length' xs
+sum' :: (Num a) => [a] -> a
+sum' [] = 0
+sum' (x:xs) = x + sum' xs
+ patrones como, o patrones as (as patterns) Ejemplo: xs@(x:y:ys). Este patrón se ajustará exactamente a lo mismo que lo haría x:y:ys pero además podríamos acceder fácilmente a la lista completa usando xs en lugar de tener que repetirnos escribiendo x:y:ys
+
+Funciones infijas (infix functions)
+
+Funciones de orden superior (Higher order functions). Las funciones de Haskell pueden tomar funciones como parámetros y devolver funciones como resultado. Una función que hace ambas cosas o alguna de ellas se llama función de orden superior.
+Funciones currificadas (Curried functions) Oficialmente cada función de Haskell solo puede tomar un parámetro. Todas las funciones que hemos usado hasta el momento y aceptaban más de un parámetro han sido funciones currificadas 
+ghci> max 4 5
+5
+ghci> (max 4) 5
+5
+El poner un espacio entre dos cosas es sencillamente aplicar una función (function application). El espacio es una especie de operador y tiene el orden de preferencia mayor
+max :: (Ord a) => a -> a -> a  
+max :: (Ord a) => a -> (a -> a) puede leerse como: max toma un a y devuelve (eso es ->) una función que toma un a y devuelve un a
+
+Si llamamos a una función con parámetros de menos obtenemos una función parcialmente aplicada (partially applied function)
+multThree :: (Num a) => a -> a -> a -> a
+multThree x y z = x * y * z
+ghci> let multTwoWithNine = multThree 9
+ghci> multTwoWithNine 2 3
+54
+
+compareWithHundred :: (Num a, Ord a) => a -> Ordering
+compareWithHundred x = compare 100 x
+compareWithHundred :: (Num a, Ord a) => a -> Ordering
+compareWithHundred = compare 100  Hemos quitado a x, no hace falta, 'compare 100' ya devuelve una función que toma un número y lo compara con 100
+
+Al llamar a funciones con menos parámetros de los necesarios creamos funciones al vuelo 
+Qué pasa si intentamos hacer multThree 3 4 en GHCi en lugar de darle un nombre con un 'let' o pasarlo a otra función? Error, GHCi nos está diciendo que expresión producida es una función del tipo a -> a pero no sabe como mostrarlo por pantalla. Las funciones no son miembros de la clase de tipos Show, así que no podemos obtener una cadena con la representación de una función
+
+Las funciones pueden tomar funciones como parámetros y también devolver funciones (funciones de orden superior).
+applyTwice :: (a -> a) -> a -> a Los paréntesis indican que el primer parámetro es una función que toma algo y devuelve algo del mismo tipo.
+applyTwice f x = f (f x)
+ghci> applyTwice (++ " HAHA") "HEY"
+"HEY HAHA HAHA"
+
+Lambdas. Las lambdas son funciones anónimas. Para crear una lambda escribimos un \  Ejemplo: ( \xs-> length xs )
+Las lambdas son expresiones, ese es el porqué podemos simplemente pasarlas así. La expresión (\xs -> length xs > 15) devuelve una función que nos dice si el tamaño de una lista es mayor que 15.
+
+flip' :: (a -> b -> c) -> b -> a -> c
+flip' f = \x y -> f y x     es lo mismo que    flip' f x y = f y x
+
+Función $, también llamada aplicación de función.
+($) :: (a -> b) -> a -> b
+f $ x = f x
+La aplicación de funciones normal (un espacio entre dos cosas) tiene un alto orden de precedencia, la función $ tiene el orden de precedencia más bajo
+La aplicación de funciones con el espacio es asociativa a izquierdas (así que f a b c es lo mismo que ((f a) b) c), la aplicación de funciones con $ es asociativa a derechas.
+
+Composición de funciones.
+(.) :: (b -> c) -> (a -> b) -> a -> c
+f . g = \x -> f (g x)
+map (negate . abs) [5,-3,-6,7,-3,2,-19,24]    es lo mismo que     map (\x -> negate (abs x)) [5,-3,-6,7,-3,2,-19,24]
+La composición de funciones es asociativa a derecha
+La expresión f (g (z x)) es equivalente a (f . g . z) x
+
+Estilo libre de puntos
+sum' = foldl (+) 0  es lo mismo que    sum' xs = foldl (+) 0 xs
+Podemos eliminar xs de ambos lados gracias a la currificación, ya que foldl (+) 0 es una función que toma una lista. A esto se le llama Estilo libre de puntos.
+
+fn x = ceiling (negate (tan (cos (max 50 x))))
+En este caso no se puede eliminar la x de ambos lados, en el cuerpo de la función tiene un paréntesis después de ella.
+Pero si podemos si la pasamos a composición de funciones. (al ser asociativa a la derecha)
+fn = ceiling . negate . tan . cos . max 50
+
+
+
+
+
+
+
