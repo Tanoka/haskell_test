@@ -56,10 +56,11 @@ instance Monad [] where
 	fail _ = []  	
 	
 -- Otras Implementaciones de >>=	
---	xs >>= f = concat $ [f] <*> xs -- Utilizando applicative para []
--- xs >>= f = join $ pure f <*> xs -- Utilizando applicative, general, ¿ vale para cualquier tipo de applicative??
--- join :: Monad m => m (m x) -> m 
--- xs >>= k = join (fmap k xs)	
+--xs >>= f = concat $ [f] <*> xs -- Utilizando applicative para []
+-- xs >>= f = join $ pure f <*> xs -- Utilizando applicative, general, ¿ Si está applicative definido este monad sirve para todos??
+--
+-- join :: Monad m => m (m x) -> m .. versión general de "concat"
+-- xs >>= k = join (fmap k xs)	-- utilizando functor.
 
 -- Ejemplos:
 -- [1,2,3] >>= (\x -> [x+2])
