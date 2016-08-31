@@ -1,0 +1,64 @@
+Language:
+-------------
+Lazy
+Pure
+Static type checking
+Type inference
+
+Functions:
+-----------
+Pattern matching:
+    bind var to matches  f (a b _) = ...
+    Guards
+    Break down values (lists @(x:xs) )
+    Literal values
+    
+Statements:
+    'if _ then _ else _'
+    'case _ of _
+         _ -> _'
+local bindings:         
+    'let _ in _'
+    'where _'
+ 
+Lamba functions:
+\x -> x + x  ==> sum = \x -> x + x ==> sum x = x + x
+\x -> \y -> x + y  ==> sum' = \x -> \y -> x + y ==> sum' x y = x + y
+
+Explicit type declarations = type signature
+Partial application ==> n eta reduction
+($) function application
+(.) function composition
+fixity
+
+sintactic sugar
+List comprehension
+do blocks
+
+types:
+-------
+simple type
+polimorphic type ==> type variables
+function types ==> first class values
+Data types
+    datatypes
+    type parameters
+    constructor
+    constructor parameters
+Unit type ()    
+record syntax
+_|_ bottom ==> undefined
+high order types
+Kind
+
+'class'
+'deriving'
+'instance'
+'type'
+'newtype'
+
+    
+    
+    
+        
+    
