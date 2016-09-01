@@ -47,7 +47,7 @@ class  Monad m  where
 -- concat :: [[a]] -> [a]		
 instance Monad [] where  
 	return x = [x]  
-	xs >>= f = concat (map f xs)  
+	xs >>= f = concat (map f xs) 
 	fail _ = []  
 
 instance Monad [] where  
@@ -60,9 +60,9 @@ instance Monad [] where
 -- xs >>= f = join $ pure f <*> xs -- Utilizando applicative, general, ¿ Si está applicative definido este monad sirve para todos??
 --
 -- join :: Monad m => m (m x) -> m .. versión general de "concat"
--- xs >>= k = join (fmap k xs)	-- utilizando functor.
+-- xs >>= k = join (fmap k xs)	-- utilizando functor. tambien sería general, y f de monad no tendría porque ser applicative, solo functor.??
 
 -- Ejemplos:
 -- [1,2,3] >>= (\x -> [x+2])
--- [1,2,3] >>= (\x -> [x+2]) >>= (\x -> [x/2]) -- Encadenando funciones a una lista
+-- [1,2,3] >>= (\x -> [x+2]) >>= (\x -> [x/2]) -- Encadenando funciones a una lista. o (\x -> return (x/2))
 

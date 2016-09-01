@@ -14,7 +14,7 @@ f3 x = tail $ reverse x
     (.) :: (b -> c) -> (a -> b) -> a -> c  
     f . g = \x -> f (g x)  
  
-   Function composition puede sustituir muchas veces a funciones anónimas, como (\x -> negate (abs s) por (negate . abs)
+   Function composition puede sustituir muchas veces a funciones anónimas, como (\x -> negate (abs x) por (negate . abs)
    Function composition es right-associative por lo que puede sustituir a los paréntesis 
    
    $ infixr 0 mínima precerencia, asociativo por la derecha, los paréntesis los pone desde la derecha.
@@ -28,8 +28,9 @@ f4' x = (tail . reverse) x -- hay que poner paréntesis porque " " tiene mayor p
 f4'' x = tail . reverse $ x -- $ tiene menor precedencia que . por lo que la composicion de funciones se puede construrir bien ($) :: (a -> b) -> a -> b 
 
 -- f4''' x = tail . reverse x -- error ‘reverse’ is applied to too many arguments In the second argument of ‘(.)’, namely ‘reverse x’
-                              --  como . tiene la precerencia más baja y el " " la más alta, primero se ejecuta "reverse x", como esto no es 
-                              -- una función no puede formar parte de la function composition
+                              --  como . tiene precerencia más baja que " ", que tiene la máxima, primero se ejecuta "reverse x", como el
+                              -- resultado de esta operación esto no es una función sino una lista, no puede formar parte de la function composition,
+                              -- pues esta exige dos funciones.
 --f4'''' x = tail . (reverse x) -- error ‘reverse’ is applied to too many arguments In the second argument of ‘(.)’, namely ‘(reverse x)’
 
 f5 = ((+) . (2*)) -- Pide x y aplica, lo que da otra función ((+) (2*x)) la cual pide otro parámetro (+) (2*x) y

@@ -24,7 +24,7 @@ local bindings:
 Lamba functions:
 \x -> x + x  ==> sum = \x -> x + x ==> sum x = x + x
 \x -> \y -> x + y  ==> sum' = \x -> \y -> x + y ==> sum' x y = x + y
-
+curried functions
 Explicit type declarations = type signature
 Partial application ==> n eta reduction
 ($) function application
@@ -49,6 +49,8 @@ Unit type ()
 record syntax
 _|_ bottom ==> undefined
 high order types
+typeclasses
+class constraint
 Kind
 
 'class'
