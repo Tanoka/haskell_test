@@ -23,7 +23,7 @@ local bindings:
  
 Lamba functions:
 \x -> x + x  ==> sum = \x -> x + x ==> sum x = x + x
-\x -> \y -> x + y  ==> sum' = \x -> \y -> x + y ==> sum' x y = x + y
+\x -> \y -> x + y  ==> sum' = \x -> \y -> x + y ==> sum' = \x y -> x + y ==> sum' x y = x + y
 curried functions
 Explicit type declarations = type signature
 Partial application ==> n eta reduction
