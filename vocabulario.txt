@@ -53,8 +53,8 @@ typeclasses
 class constraint
 Kind
 
-'class'
-'deriving'
+'data'
+'class' 'deriving'
 'instance'
 'type'
 'newtype'
