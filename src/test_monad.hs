@@ -2,11 +2,12 @@
 -- Functor
 class Functor f where  
 	fmap :: (a -> b) -> f a -> f b  
-
+    
 -- map :: (a -> b) -> [a] -> [b]
 instance Functor [] where  
 	fmap = map  
-	
+    <$> = fmap -- infix sinónimo
+	      
 instance Functor [] where
   fmap _ []     = []
   fmap f (x:xs) = f x : fmap f xs	
